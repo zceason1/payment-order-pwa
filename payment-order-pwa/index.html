@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#165f63">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="货款单">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>产品货款单</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" href="./assets/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-192.png">
+    <link rel="stylesheet" href="./src/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-labelledby="pageTitle">
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">本地生成 · 不上传数据</p>
+            <h1 id="pageTitle">产品货款单</h1>
+          </div>
+          <div class="status-pill" id="saveStatus" aria-live="polite">已准备</div>
+        </header>
+
+        <div class="toolbar" aria-label="表单操作">
+          <button class="tool-button" id="addRowBtn" type="button">
+            <span aria-hidden="true">+</span>
+            添加产品
+          </button>
+          <button class="tool-button primary" id="exportExcelBtn" type="button">
+            <span aria-hidden="true">↓</span>
+            导出 Excel
+          </button>
+          <button class="icon-button" id="clearBtn" type="button" title="清空表单" aria-label="清空表单">
+            ×
+          </button>
+        </div>
+
+        <p class="browser-tip" id="browserTip" hidden>
+          iPhone 微信内置浏览器可能无法保存 Excel。请点右上角菜单，选择“在 Safari 中打开”后再导出。
+        </p>
+
+        <section class="desktop-table" aria-label="产品明细表">
+          <table>
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>产品</th>
+                <th>单位</th>
+                <th>数量</th>
+                <th>单价（元）</th>
+                <th>合价（元）</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </section>
+
+        <section class="mobile-list" id="mobileList" aria-label="产品明细卡片"></section>
+
+        <footer class="summary-bar">
+          <div>
+            <span class="summary-label">总计</span>
+            <strong id="totalDisplay">0.00</strong>
+          </div>
+          <span class="summary-note">数量 × 单价自动计算</span>
+        </footer>
+      </section>
+    </main>
+
+    <script src="./assets/xlsx.full.min.js"></script>
+    <script src="./assets/xlsx-bridge.js"></script>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

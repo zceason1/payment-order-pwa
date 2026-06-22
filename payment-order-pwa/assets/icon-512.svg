@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="产品货款单">
+  <rect width="512" height="512" rx="112" fill="#165f63"/>
+  <path d="M120 122h272v267H120z" fill="#fbfaf6"/>
+  <path d="M162 182h188M162 249h188M162 316h128" stroke="#165f63" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="365" cy="335" r="64" fill="#c5652c"/>
+  <path d="M336 337h58M365 308v58" stroke="#fbfaf6" stroke-width="22" stroke-linecap="round"/>
+</svg>
