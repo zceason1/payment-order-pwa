@@ -2,6 +2,7 @@ import {
   buildExportFilename,
   buildInputLabel,
   buildWorksheetRows,
+  chooseExportDelivery,
   calcRowTotal,
   computeGrandTotal,
   createEmptyRow,
@@ -210,8 +211,32 @@ async function shareOrDownload(blob, filename) {
   const file = new File([blob], filename, {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
+  const canDownload = Boolean(
+    window.URL
+      && window.URL.createObjectURL
+      && 'download' in document.createElement('a'),
+  );
+  const canShareFiles = Boolean(
+    navigator.canShare
+      && navigator.share
+      && navigator.canShare({ files: [file] }),
+  );
+  const delivery = chooseExportDelivery({ canDownload, canShareFiles });
 
-  if (navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
+  if (delivery === 'download') {
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.rel = 'noopener';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    return;
+  }
+
+  if (delivery === 'share') {
     await navigator.share({
       files: [file],
       title: '产品货款单',
@@ -220,14 +245,7 @@ async function shareOrDownload(blob, filename) {
     return;
   }
 
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+  throw new Error('browser does not support file export');
 }
 
 async function exportExcel() {
@@ -252,7 +270,7 @@ async function exportExcel() {
     saveStatus.textContent = '已导出 Excel';
   } catch (error) {
     if (error.name !== 'AbortError') {
-      window.alert('导出失败，请尝试使用 Safari 或电脑浏览器打开。');
+      window.alert('导出失败，请使用 Chrome、Edge、Safari 或系统浏览器打开后重试。');
     }
   }
 }
