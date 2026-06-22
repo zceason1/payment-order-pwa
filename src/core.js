@@ -86,3 +86,9 @@ export function buildInputLabel(surface, label, rowId) {
 export function pickXlsx(candidates) {
   return candidates.find((candidate) => candidate && candidate.utils && candidate.write) || null;
 }
+
+export function chooseExportDelivery({ canDownload, canShareFiles }) {
+  if (canDownload) return 'download';
+  if (canShareFiles) return 'share';
+  return 'unsupported';
+}
