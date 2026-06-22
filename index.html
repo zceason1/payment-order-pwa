@@ -11,7 +11,7 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./assets/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-192.png">
-    <link rel="stylesheet" href="./src/styles.css">
+    <link rel="stylesheet" href="./src/styles.css?v=mobile-actions-20260622">
   </head>
   <body>
     <main class="shell">
@@ -25,14 +25,6 @@
         </header>
 
         <div class="toolbar" aria-label="表单操作">
-          <button class="tool-button" id="addRowBtn" type="button">
-            <span aria-hidden="true">+</span>
-            添加产品
-          </button>
-          <button class="tool-button primary" id="exportExcelBtn" type="button">
-            <span aria-hidden="true">↓</span>
-            导出 Excel
-          </button>
           <button class="icon-button" id="clearBtn" type="button" title="清空表单" aria-label="清空表单">
             ×
           </button>
@@ -62,17 +54,26 @@
         <section class="mobile-list" id="mobileList" aria-label="产品明细卡片"></section>
 
         <footer class="summary-bar">
-          <div>
+          <div class="summary-total">
             <span class="summary-label">总计</span>
             <strong id="totalDisplay">0.00</strong>
           </div>
-          <span class="summary-note">数量 × 单价自动计算</span>
+          <div class="summary-actions" aria-label="常用操作">
+            <button class="tool-button compact" id="addRowBtn" type="button">
+              <span aria-hidden="true">+</span>
+              添加产品
+            </button>
+            <button class="tool-button primary compact" id="exportExcelBtn" type="button">
+              <span aria-hidden="true">↓</span>
+              导出 Excel
+            </button>
+          </div>
         </footer>
       </section>
     </main>
 
     <script src="./assets/xlsx.full.min.js?v=0.18.5-20260622"></script>
     <script src="./assets/xlsx-bridge.js?v=e513d09"></script>
-    <script type="module" src="./src/app.js?v=e513d09"></script>
+    <script type="module" src="./src/app.js?v=mobile-actions-20260622"></script>
   </body>
 </html>
