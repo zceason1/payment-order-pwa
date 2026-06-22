@@ -90,6 +90,7 @@ h1 {
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   margin: 20px 0;
 }
 
@@ -107,9 +108,14 @@ h1 {
 .tool-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 0 16px;
   font-weight: 750;
+}
+
+.tool-button.compact {
+  min-width: 136px;
 }
 
 .tool-button span {
@@ -248,6 +254,10 @@ tbody tr:last-child td {
   border: 1px solid var(--line);
 }
 
+.summary-total {
+  min-width: 150px;
+}
+
 .summary-label {
   display: block;
   color: var(--muted);
@@ -260,15 +270,22 @@ tbody tr:last-child td {
   color: var(--brand-strong);
 }
 
-.summary-note {
-  color: var(--muted);
-  font-size: 14px;
+.summary-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 720px) {
+  body {
+    padding-bottom: calc(132px + env(safe-area-inset-bottom));
+  }
+
   .shell {
     align-items: stretch;
-    padding: 10px;
+    padding: 10px 10px 0;
   }
 
   .workspace {
@@ -284,13 +301,7 @@ tbody tr:last-child td {
   }
 
   .toolbar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 44px;
-  }
-
-  .tool-button {
-    justify-content: center;
-    padding: 0 10px;
+    margin: 14px 0;
   }
 
   .desktop-table {
@@ -354,22 +365,54 @@ tbody tr:last-child td {
   }
 
   .summary-bar {
-    position: sticky;
+    position: fixed;
+    left: 10px;
+    right: 10px;
     bottom: max(10px, env(safe-area-inset-bottom));
-    z-index: 2;
-    align-items: flex-start;
-    flex-direction: column;
-    box-shadow: 0 12px 28px rgba(27, 42, 39, 0.14);
+    z-index: 20;
+    align-items: center;
+    box-shadow: 0 18px 36px rgba(27, 42, 39, 0.2);
+    backdrop-filter: blur(12px);
+  }
+
+  .summary-total {
+    min-width: 96px;
+  }
+
+  #totalDisplay {
+    font-size: 28px;
+  }
+
+  .summary-actions {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-width: 0;
+  }
+
+  .tool-button.compact {
+    min-width: 0;
+    min-height: 48px;
+    padding: 0 10px;
   }
 }
 
 @media (max-width: 390px) {
-  .toolbar {
-    grid-template-columns: 1fr;
-  }
-
   .icon-button {
     width: 100%;
+  }
+
+  .summary-bar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .summary-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
   }
 
   .card-grid {
