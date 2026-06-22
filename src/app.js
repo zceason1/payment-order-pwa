@@ -261,6 +261,8 @@ function getXlsx() {
   const candidates = [
     window.XLSX,
     typeof XLSX !== 'undefined' ? XLSX : null,
+    typeof exports !== 'undefined' ? exports : null,
+    typeof module !== 'undefined' && module && module.exports ? module.exports : null,
     window.exports,
     window.module && window.module.exports,
     globalThis.XLSX,

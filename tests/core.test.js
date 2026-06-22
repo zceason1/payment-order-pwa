@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
 
 import {
   calcRowTotal,
@@ -89,4 +91,21 @@ test('pickXlsx returns the first candidate that looks like the SheetJS API', () 
 
   assert.equal(pickXlsx([undefined, {}, usable]), usable);
   assert.equal(pickXlsx([undefined, {}, { utils: {} }]), null);
+});
+
+test('xlsx bridge exposes a CommonJS-style export as window.XLSX', () => {
+  const bridgeCode = fs.readFileSync(new URL('../assets/xlsx-bridge.js', import.meta.url), 'utf8');
+  const usable = { utils: {}, write() {} };
+  const context = {
+    window: {
+      self: {},
+    },
+    exports: usable,
+  };
+  context.window.globalThis = context.window;
+  vm.createContext(context);
+
+  vm.runInContext(bridgeCode, context);
+
+  assert.equal(context.window.XLSX, usable);
 });
