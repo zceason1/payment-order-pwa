@@ -280,7 +280,7 @@ tbody tr:last-child td {
 
 @media (max-width: 720px) {
   body {
-    padding-bottom: calc(132px + env(safe-area-inset-bottom));
+    padding-bottom: calc(154px + env(safe-area-inset-bottom));
   }
 
   .shell {
@@ -370,24 +370,34 @@ tbody tr:last-child td {
     right: 10px;
     bottom: max(10px, env(safe-area-inset-bottom));
     z-index: 20;
-    align-items: center;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
     box-shadow: 0 18px 36px rgba(27, 42, 39, 0.2);
     backdrop-filter: blur(12px);
   }
 
   .summary-total {
-    min-width: 96px;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
   }
 
   #totalDisplay {
     font-size: 28px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-align: right;
   }
 
   .summary-actions {
-    flex: 1 1 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-width: 0;
+    width: 100%;
   }
 
   .tool-button.compact {
@@ -403,16 +413,13 @@ tbody tr:last-child td {
   }
 
   .summary-bar {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 10px;
+    padding: 14px;
   }
 
   .summary-total {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .card-grid {
