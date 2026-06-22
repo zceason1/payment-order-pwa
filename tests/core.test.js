@@ -11,6 +11,7 @@ import {
   buildWorksheetRows,
   buildExportFilename,
   buildInputLabel,
+  chooseExportDelivery,
   pickXlsx,
 } from '../src/core.js';
 
@@ -93,6 +94,13 @@ test('pickXlsx returns the first candidate that looks like the SheetJS API', () 
   assert.equal(pickXlsx([undefined, {}, { utils: {} }]), null);
 });
 
+test('chooseExportDelivery prefers blob download when both download and share are available', () => {
+  assert.equal(chooseExportDelivery({ canDownload: true, canShareFiles: true }), 'download');
+  assert.equal(chooseExportDelivery({ canDownload: true, canShareFiles: false }), 'download');
+  assert.equal(chooseExportDelivery({ canDownload: false, canShareFiles: true }), 'share');
+  assert.equal(chooseExportDelivery({ canDownload: false, canShareFiles: false }), 'unsupported');
+});
+
 test('xlsx bridge exposes a CommonJS-style export as window.XLSX', () => {
   const bridgeCode = fs.readFileSync(new URL('../assets/xlsx-bridge.js', import.meta.url), 'utf8');
   const usable = { utils: {}, write() {} };
@@ -108,4 +116,24 @@ test('xlsx bridge exposes a CommonJS-style export as window.XLSX', () => {
   vm.runInContext(bridgeCode, context);
 
   assert.equal(context.window.XLSX, usable);
+});
+
+test('summary bar contains the primary product actions for mobile use', () => {
+  const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const summaryMatch = html.match(/<footer class="summary-bar">[\s\S]*?<\/footer>/);
+
+  assert.ok(summaryMatch, 'summary bar should exist');
+  assert.match(summaryMatch[0], /id="addRowBtn"/);
+  assert.match(summaryMatch[0], /id="exportExcelBtn"/);
+});
+
+test('mobile styles keep the summary action bar floating at the bottom', () => {
+  const styles = fs.readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+  const mobileBlock = styles.match(/@media \(max-width: 720px\) \{[\s\S]*?(?=\n@media|\n$)/);
+
+  assert.ok(mobileBlock, 'mobile media block should exist');
+  assert.match(mobileBlock[0], /\.summary-bar\s*\{[\s\S]*?position: fixed;/);
+  assert.match(mobileBlock[0], /\.summary-bar\s*\{[\s\S]*?flex-direction: column;/);
+  assert.match(mobileBlock[0], /\.summary-total\s*\{[\s\S]*?width: 100%;/);
+  assert.match(mobileBlock[0], /\.summary-actions\s*\{[\s\S]*?grid-template-columns: 1fr 1fr;/);
 });
